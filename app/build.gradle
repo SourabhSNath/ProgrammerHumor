@@ -83,6 +83,10 @@ dependencies {
 
     // Timber
     implementation 'com.jakewharton.timber:timber:4.7.1'
+
+    // Accompanist
+    implementation "com.google.accompanist:accompanist-insets:0.10.0"
+    implementation "com.google.accompanist:accompanist-systemuicontroller:0.10.0"
 }
 
 kapt {
