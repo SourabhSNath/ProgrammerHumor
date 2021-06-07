@@ -7,7 +7,7 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class Variants(
     @Json(name = "gif")
-    val gif: Gif,
+    val gif: Gif?,
     @Json(name = "mp4")
-    val mp4: Mp4
+    val mp4: Mp4?
 )

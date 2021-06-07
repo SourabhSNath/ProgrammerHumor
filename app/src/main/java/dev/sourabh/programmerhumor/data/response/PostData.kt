@@ -7,20 +7,6 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class PostData(
     val author: String,
-    @Json(name = "author_flair_background_color")
-    val authorFlairType: String,
-    @Json(name = "author_fullname")
-    val authorFullname: String,
-    @Json(name = "author_patreon_flair")
-    val authorPatreonFlair: Boolean,
-    @Json(name = "author_premium")
-    val authorPremium: Boolean,
-    @Json(name = "can_gild")
-    val canGild: Boolean,
-    @Json(name = "can_mod_post")
-    val canModPost: Boolean,
-    @Json(name = "contest_mode")
-    val contestMode: Boolean,
     @Json(name = "created")
     val created: Double,
     @Json(name = "created_utc")
@@ -29,48 +15,26 @@ data class PostData(
     val domain: String,
     @Json(name = "downs")
     val downs: Int,
-    @Json(name = "edited")
-    val edited: Boolean,
     @Json(name = "gilded")
-    val gilded: Int,
-    @Json(name = "gildings")
-    val gildings: Gildings,
+    val gilded: Int?,
     @Json(name = "hidden")
     val hidden: Boolean,
     @Json(name = "hide_score")
     val hideScore: Boolean,
     @Json(name = "id")
     val id: String,
-    @Json(name = "is_created_from_ads_ui")
-    val isCreatedFromAdsUi: Boolean,
-    @Json(name = "is_crosspostable")
-    val isCrosspostable: Boolean,
     @Json(name = "is_meta")
     val isMeta: Boolean,
     @Json(name = "is_original_content")
     val isOriginalContent: Boolean,
     @Json(name = "is_reddit_media_domain")
     val isRedditMediaDomain: Boolean,
-    @Json(name = "is_robot_indexable")
-    val isRobotIndexable: Boolean,
     @Json(name = "is_self")
     val isSelf: Boolean,
     @Json(name = "is_video")
     val isVideo: Boolean,
-    @Json(name = "link_flair_background_color")
-    val linkFlairBackgroundColor: String,
-    @Json(name = "link_flair_richtext")
-    val linkFlairRichtext: List<LinkFlairRichtext>,
-    @Json(name = "link_flair_template_id")
-    val linkFlairTemplateId: String,
-    @Json(name = "link_flair_text_color")
-    val linkFlairTextColor: String,
-    @Json(name = "link_flair_type")
-    val linkFlairType: String,
     @Json(name = "locked")
     val locked: Boolean,
-    @Json(name = "media_embed")
-    val mediaEmbed: MediaEmbed,
     @Json(name = "media_only")
     val mediaOnly: Boolean,
     @Json(name = "name")
@@ -79,8 +43,6 @@ data class PostData(
     val noFollow: Boolean,
     @Json(name = "num_comments")
     val numComments: Int,
-    @Json(name = "num_crossposts")
-    val numCrossposts: Int,
     @Json(name = "over_18")
     val over18: Boolean,
     @Json(name = "parent_whitelist_status")
@@ -93,18 +55,12 @@ data class PostData(
     val postHint: String,
     @Json(name = "preview")
     val preview: Preview,
-    @Json(name = "pwls")
-    val pwls: Int,
-    @Json(name = "quarantine")
-    val quarantine: Boolean,
     @Json(name = "saved")
     val saved: Boolean,
     @Json(name = "score")
     val score: Int,
-    @Json(name = "secure_media_embed")
-    val secureMediaEmbed: SecureMediaEmbed,
     @Json(name = "selftext")
-    val selftext: String,
+    val selftext: String?,
     @Json(name = "send_replies")
     val sendReplies: Boolean,
     @Json(name = "spoiler")
@@ -113,20 +69,10 @@ data class PostData(
     val stickied: Boolean,
     @Json(name = "subreddit")
     val subreddit: String,
-    @Json(name = "subreddit_id")
-    val subredditId: String,
-    @Json(name = "subreddit_name_prefixed")
-    val subredditNamePrefixed: String,
-    @Json(name = "subreddit_subscribers")
-    val subredditSubscribers: Int,
     @Json(name = "subreddit_type")
     val subredditType: String,
     @Json(name = "thumbnail")
     val thumbnail: String,
-    @Json(name = "thumbnail_height")
-    val thumbnailHeight: Int,
-    @Json(name = "thumbnail_width")
-    val thumbnailWidth: Int,
     @Json(name = "title")
     val title: String,
     @Json(name = "total_awards_received")
@@ -138,11 +84,5 @@ data class PostData(
     @Json(name = "url")
     val url: String,
     @Json(name = "url_overridden_by_dest")
-    val urlOverriddenByDest: String,
-    @Json(name = "visited")
-    val visited: Boolean,
-    @Json(name = "whitelist_status")
-    val whitelistStatus: String,
-    @Json(name = "wls")
-    val wls: Int
+    val urlOverriddenByDest: String
 )

@@ -7,5 +7,5 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class Gildings(
     @Json(name = "gid_1")
-    val gid1: Int
+    val gid1: Int?
 )

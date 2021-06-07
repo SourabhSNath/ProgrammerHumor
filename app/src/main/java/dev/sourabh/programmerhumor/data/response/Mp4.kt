@@ -7,7 +7,7 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class Mp4(
     @Json(name = "resolutions")
-    val resolutions: List<ResolutionXX>,
+    val resolutions: List<Resolution>?,
     @Json(name = "source")
-    val source: SourceXX
+    val source: Source?
 )

@@ -9,7 +9,7 @@ data class Resolution(
     @Json(name = "height")
     val height: Int,
     @Json(name = "url")
-    val url: String,
+    val url: String?,
     @Json(name = "width")
     val width: Int
 )

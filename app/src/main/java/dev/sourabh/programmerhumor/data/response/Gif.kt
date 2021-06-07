@@ -7,7 +7,7 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class Gif(
     @Json(name = "resolutions")
-    val resolutions: List<ResolutionX>,
+    val resolutions: List<Resolution>?,
     @Json(name = "source")
-    val source: SourceX
+    val source: Source
 )
