@@ -9,66 +9,48 @@ import androidx.compose.ui.unit.sp
 import dev.sourabh.programmerhumor.R
 
 
-val Karla = FontFamily(
-    Font(R.font.karla_light, FontWeight.Light),
-    Font(R.font.karla_regular, FontWeight.Normal)
+val Lobster = FontFamily(Font(R.font.lobster_regular, FontWeight.Bold))
+
+@Suppress("SpellCheckingInspection")
+val FiraCodeMono = FontFamily(
+    Font(R.font.firacode_regular, FontWeight.Normal),
+    Font(R.font.firacode_bold, FontWeight.Bold)
 )
 
-val Rubik = FontFamily(
-    Font(R.font.rubik_regular, FontWeight.Normal),
-    Font(R.font.rubik_medium, FontWeight.Medium),
-    Font(R.font.rubik_bold, FontWeight.Bold)
+val Montserrat = FontFamily(
+    Font(R.font.montserrat_regular, FontWeight.Normal),
+    Font(R.font.montserrat_bold, FontWeight.Bold)
 )
 
 val Typography = Typography(
-    h4 = TextStyle(
-        fontFamily = Rubik,
-        fontWeight = FontWeight.Bold,
-        fontSize = 30.sp
-    ),
     h5 = TextStyle(
-        fontFamily = Rubik,
+        fontFamily = Lobster,
         fontWeight = FontWeight.Bold,
-        fontSize = 24.sp
+        fontSize = 28.sp
     ),
     h6 = TextStyle(
-        fontFamily = Rubik,
+        fontFamily = Montserrat,
         fontWeight = FontWeight.Bold,
         fontSize = 20.sp
     ),
-    subtitle1 = TextStyle(
-        fontFamily = Karla,
-        fontWeight = FontWeight.W500,
-        fontSize = 16.sp
-    ),
-    subtitle2 = TextStyle(
-        fontFamily = Karla,
-        fontWeight = FontWeight.W500,
-        fontSize = 14.sp
-    ),
     body1 = TextStyle(
-        fontFamily = Karla,
+        fontFamily = FiraCodeMono,
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp
     ),
     body2 = TextStyle(
-        fontFamily = Karla,
+        fontFamily = FiraCodeMono,
         fontSize = 14.sp,
         lineHeight = 20.sp
     ),
     button = TextStyle(
-        fontFamily = Karla,
+        fontFamily = Montserrat,
         fontWeight = FontWeight.W500,
         fontSize = 14.sp
     ),
     caption = TextStyle(
-        fontFamily = Karla,
+        fontFamily = FiraCodeMono,
         fontWeight = FontWeight.Normal,
-        fontSize = 12.sp
-    ),
-    overline = TextStyle(
-        fontFamily = Karla,
-        fontWeight = FontWeight.W500,
         fontSize = 12.sp
     )
 )
