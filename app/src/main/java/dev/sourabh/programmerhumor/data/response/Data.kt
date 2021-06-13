@@ -7,13 +7,9 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class Data(
     @Json(name = "after")
-    val after: String,
+    val after: String?,
     @Json(name = "before")
     val before: String?,
     @Json(name = "children")
-    val children: List<Children>,
-    @Json(name = "dist")
-    val dist: Int?,
-    @Json(name = "modhash")
-    val modhash: String?
+    val children: List<Children>
 )
