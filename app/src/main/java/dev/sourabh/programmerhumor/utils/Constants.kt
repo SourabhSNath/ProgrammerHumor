@@ -1,4 +1,3 @@
 package dev.sourabh.programmerhumor.utils
 
-class Constants {
-}
+const val BASE_URL = "https://www.reddit.com/"
