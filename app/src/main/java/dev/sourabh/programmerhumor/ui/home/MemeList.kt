@@ -8,6 +8,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -17,10 +18,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.Share
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -40,6 +38,7 @@ import dev.sourabh.programmerhumor.R
 import dev.sourabh.programmerhumor.data.model.ImageData
 import dev.sourabh.programmerhumor.data.response.PostData
 import dev.sourabh.programmerhumor.ui.theme.DividerLight
+import dev.sourabh.programmerhumor.ui.theme.WhiteTranslucent
 import dev.sourabh.programmerhumor.utils.getCoilImageBitmap
 import dev.sourabh.programmerhumor.utils.gifImageLoader
 import kotlinx.coroutines.CoroutineScope
@@ -49,13 +48,11 @@ import kotlinx.coroutines.withContext
 import timber.log.Timber
 import java.io.File
 import java.io.FileOutputStream
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 
 @Composable
 fun MemesList(memes: LazyPagingItems<PostData>, navController: NavController) {
     LazyColumn(
-        modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp),
+        modifier = Modifier.fillMaxWidth()/*.padding(horizontal = 24.dp)*/,
         contentPadding = PaddingValues(bottom = 56.dp)
     ) {
         items(memes) {
@@ -94,8 +91,9 @@ fun Meme(postData: PostData, navController: NavController) {
         val imageUrl = postData.url
 
         var isImageLoaded by remember { mutableStateOf(false) }
+        var isImageSharingComplete by remember { mutableStateOf<Boolean?>(null) }
 
-        Column(modifier = Modifier.padding(start = 8.dp, end = 8.dp, top = 16.dp).fillMaxWidth()) {
+        Column(modifier = Modifier.padding(start = 32.dp, end = 32.dp, top = 16.dp).fillMaxWidth()) {
             Text(
                 text = postData.author,
                 style = MaterialTheme.typography.body2,
@@ -104,10 +102,12 @@ fun Meme(postData: PostData, navController: NavController) {
             Text(text = postData.title, style = MaterialTheme.typography.h6)
         }
 
-        StatsAndShareIcons(postData.score, postData.numComments, imageUrl, postData.title, isImageLoaded)
+        StatsAndShareIcons(postData.score, postData.numComments, imageUrl, postData.title, isImageLoaded) {
+            isImageSharingComplete = it
+        }
 
         val isGif = imageUrl.substring(imageUrl.lastIndexOf('.') + 1) == "gif"
-        Card(shape = RoundedCornerShape(24.dp), elevation = 8.dp) {
+        Card(shape = RoundedCornerShape(24.dp), elevation = 8.dp, modifier = Modifier.padding(horizontal = 24.dp)) {
 
             val painter = rememberCoilPainter(
                 request = imageUrl,
@@ -149,6 +149,16 @@ fun Meme(postData: PostData, navController: NavController) {
                         .padding(4.dp)
                 )
             }
+
+            if (isImageSharingComplete == false) {
+                Row(modifier = Modifier.padding(8.dp), verticalAlignment = Alignment.CenterVertically) {
+                    CircularProgressIndicator(modifier = Modifier.size(56.dp).padding(end = 8.dp))
+                    Text(
+                        text = "Downloading Image for sharing.", style = MaterialTheme.typography.body1,
+                        modifier = Modifier.background(WhiteTranslucent, RoundedCornerShape(16.dp)).padding(4.dp)
+                    )
+                }
+            }
         }
 
         Divider(modifier = Modifier.padding(top = 24.dp), color = DividerLight)
@@ -161,10 +171,11 @@ fun StatsAndShareIcons(
     comments: Int,
     imageUrl: String,
     title: String,
-    isImageLoaded: Boolean
+    isImageLoaded: Boolean,
+    onShareImageDone: (Boolean) -> Unit
 ) {
     Row(
-        modifier = Modifier.fillMaxWidth().padding(start = 8.dp),
+        modifier = Modifier.fillMaxWidth().padding(start = 32.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -198,8 +209,11 @@ fun StatsAndShareIcons(
         val context = LocalContext.current
         if (isImageLoaded) {
             IconButton(onClick = {
+                onShareImageDone(false)
                 Toast.makeText(context, "Please wait. Loading.", Toast.LENGTH_SHORT).show()
-                shareImage(coroutineScope, imageUrl, title, context)
+                shareImage(coroutineScope, imageUrl, title, context) {
+                    onShareImageDone(it) // Set to true when the share panel is shown
+                }
             }) {
                 Icon(Icons.Outlined.Share, contentDescription = "Share", modifier)
             }
@@ -220,7 +234,10 @@ private fun Loading() {
 }
 
 
-fun shareImage(coroutineScope: CoroutineScope, imageUrl: String, title: String, context: Context) {
+fun shareImage(
+    coroutineScope: CoroutineScope, imageUrl: String, title: String, context: Context,
+    shareIntentComplete: (Boolean) -> Unit
+) {
     coroutineScope.launch {
         val bitmapUri = getBitmapUri(imageUrl, context)
         Timber.d("Share $bitmapUri")
@@ -244,7 +261,10 @@ fun shareImage(coroutineScope: CoroutineScope, imageUrl: String, title: String, 
                 flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
             }
 
-            context.startActivity(Intent.createChooser(intent, "Share Image"))
+            context.startActivity(Intent.createChooser(intent, "Share Image")).also {
+                Timber.d("Share intent startActivity")
+                shareIntentComplete(true)
+            }
         }
     }
 }
