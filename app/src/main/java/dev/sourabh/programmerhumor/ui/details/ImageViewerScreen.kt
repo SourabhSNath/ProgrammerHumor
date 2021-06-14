@@ -39,7 +39,7 @@ fun ImageViewerScreen(navController: NavController) {
             .build(),
         requestBuilder = {
             size(OriginalSize)
-        }`
+        }
     )
 
     var scaleState by remember { mutableStateOf(1f) }
