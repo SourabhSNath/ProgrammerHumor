@@ -8,12 +8,19 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.core.view.WindowCompat
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.accompanist.insets.statusBarsPadding
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import dagger.hilt.android.AndroidEntryPoint
+import dev.sourabh.programmerhumor.ui.details.ImageViewerScreen
 import dev.sourabh.programmerhumor.ui.home.HomeScreen
 import dev.sourabh.programmerhumor.ui.theme.ProgrammerHumorTheme
+import timber.log.Timber
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,6 +30,8 @@ class MainActivity : ComponentActivity() {
             val systemUiController = rememberSystemUiController()
             val useDarkColors = MaterialTheme.colors.isLight
 
+            val navController = rememberNavController()
+
             SideEffect {
                 systemUiController.setStatusBarColor(Color.Transparent, useDarkColors)
                 systemUiController.setNavigationBarColor(Color.Transparent, useDarkColors)
@@ -30,9 +39,24 @@ class MainActivity : ComponentActivity() {
 
             ProgrammerHumorTheme {
                 ProvideWindowInsets {
-                    HomeScreen(Modifier.statusBarsPadding())
+
+                    NavHost(navController = navController, startDestination = "home") {
+                        composable("home") {
+                            HomeScreen(Modifier.statusBarsPadding(), navController)
+                        }
+
+                        composable("image_view") {
+                            ImageViewerScreen(navController)
+                        }
+                    }
                 }
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Timber.d("Deleting cache")
+        this.externalCacheDir?.deleteRecursively()
     }
 }
