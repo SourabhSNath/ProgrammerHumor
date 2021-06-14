@@ -1,29 +1,89 @@
 package dev.sourabh.programmerhumor.ui.home
 
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import androidx.paging.compose.collectAsLazyPagingItems
+import timber.log.Timber
 
 @Composable
-fun HomeScreen(modifier: Modifier = Modifier) {
-    Title(modifier)
+fun HomeScreen(
+    modifier: Modifier = Modifier,
+    navController: NavController,
+    viewModel: HomeViewModel = hiltViewModel()
+) {
+    val memes = viewModel.postsFlow.collectAsLazyPagingItems()
+    Column(modifier = Modifier.fillMaxSize()) {
+
+        AppBar(modifier = modifier, viewModel)
+        MemesList(memes, navController)
+    }
 }
 
 @Composable
-fun Title(modifier: Modifier) {
-    Text(
-        text = "Programmer\r\nHumor;", style = MaterialTheme.typography.h4,
-        modifier = modifier
-            .padding(horizontal = 24.dp, vertical = 16.dp)
-            .fillMaxWidth()
-    )
+fun AppBar(modifier: Modifier, viewModel: HomeViewModel) {
+    Row(
+        modifier = modifier.padding(start = 24.dp, end = 24.dp, top = 24.dp, bottom = 16.dp).fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Text(text = "ProgrammerHumor", style = MaterialTheme.typography.h5)
+        Sort(viewModel)
+    }
 }
 
 @Composable
-fun Meme() {
+fun Sort(viewModel: HomeViewModel) {
+    val postFilterList = listOf("Hot", "Top", "New")
+    var selected by rememberSaveable { mutableStateOf(postFilterList[0]) }
+    var expanded by remember { mutableStateOf(false) }
 
+    Surface(
+        modifier = Modifier.wrapContentSize(),
+        elevation = 2.dp,
+        shape = RoundedCornerShape(16.dp),
+        border = BorderStroke(
+            width = 1.dp, color = if (!expanded)
+                MaterialTheme.colors.primary
+            else
+                Color.Gray
+        )
+    ) {
+        Row(
+            modifier = Modifier
+                .padding(horizontal = 8.dp, vertical = 6.dp)
+                .clickable { expanded = !expanded },
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+
+            Text(text = selected, style = MaterialTheme.typography.body1) // Current post filter type
+            Icon(imageVector = Icons.Filled.ArrowDropDown, contentDescription = null)
+
+            DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+                postFilterList.forEach { label ->
+                    DropdownMenuItem(onClick = {
+                        expanded = false
+                        if (selected != label)
+                            Timber.d("Selected $label")
+                        viewModel.getPosts(sort = label)
+                        selected = label
+                    }) {
+                        Text(text = label)
+                    }
+                }
+            }
+        }
+    }
 }
