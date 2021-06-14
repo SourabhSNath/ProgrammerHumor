@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+    https://developer.android.com/training/secure-file-sharing/setup-sharing
+-->
+<paths>
+    <external-path
+        name="external_files"
+        path="." />
+</paths>
