@@ -47,22 +47,7 @@ fun ImageViewerScreen(navController: NavController) {
     var offsetX by remember { mutableStateOf(0f) }
     var offsetY by remember { mutableStateOf(0f) }
 
-    Box(modifier = Modifier.fillMaxSize().background(Color.Black)
-        .pointerInput(Unit) {
-            detectTapGestures(onDoubleTap = {
-                when {
-                    scaleState > 1.75f || scaleState < 1f -> {
-                        scaleState = 1f
-                        0f.let {
-                            rotationState = it
-                            offsetX = it
-                            offsetY = it
-                        }
-                    }
-                    else -> scaleState = 2.5f
-                }
-            })
-        }) {
+    Box(modifier = Modifier.fillMaxSize().background(Color.Black)) {
 
         Image(
             painter = painter, contentDescription = "Image",
@@ -84,7 +69,7 @@ fun ImageViewerScreen(navController: NavController) {
                         val x: Float
                         val y: Float
                         // Pan only if it's zoomed by 125%
-                        if (scaleState >= 1.25f) {
+                        if (scaleState >= 1.5f) {
                             Timber.d("X: ${pan.x}, Y: ${pan.y}")
                             x = pan.x * zoom
                             y = pan.y * zoom
@@ -95,9 +80,22 @@ fun ImageViewerScreen(navController: NavController) {
                         val angleRad = rotationState * PI / 180.0
                         offsetX += (x * cos(angleRad) - y * sin(angleRad)).toFloat()
                         offsetY += (x * sin(angleRad) + y * cos(angleRad)).toFloat()
-
                     }
-
+                }
+                .pointerInput(Unit) {
+                    detectTapGestures(onDoubleTap = {
+                        when {
+                            scaleState > 1.75f || scaleState < 1f -> {
+                                scaleState = 1f
+                                0f.let {
+                                    rotationState = it
+                                    offsetX = it
+                                    offsetY = it
+                                }
+                            }
+                            else -> scaleState = 2.5f
+                        }
+                    })
                 }
                 .fillMaxSize()
         )
