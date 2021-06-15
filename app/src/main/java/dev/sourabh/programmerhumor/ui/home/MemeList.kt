@@ -3,8 +3,6 @@ package dev.sourabh.programmerhumor.ui.home
 import android.content.ClipData
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
-import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
 import androidx.compose.foundation.Image
@@ -26,28 +24,22 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.core.content.FileProvider
 import androidx.navigation.NavController
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.items
 import com.google.accompanist.coil.rememberCoilPainter
 import com.google.accompanist.imageloading.ImageLoadState
-import dev.sourabh.programmerhumor.BuildConfig
 import dev.sourabh.programmerhumor.R
 import dev.sourabh.programmerhumor.data.model.ImageData
 import dev.sourabh.programmerhumor.data.response.PostData
 import dev.sourabh.programmerhumor.ui.theme.DividerLight
 import dev.sourabh.programmerhumor.ui.theme.WhiteTranslucent
-import dev.sourabh.programmerhumor.utils.getCoilImageBitmap
+import dev.sourabh.programmerhumor.utils.getBitmapUri
 import dev.sourabh.programmerhumor.utils.gifImageLoader
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import timber.log.Timber
-import java.io.File
-import java.io.FileOutputStream
 
 @Composable
 fun MemesList(memes: LazyPagingItems<PostData>, navController: NavController) {
@@ -260,31 +252,6 @@ fun shareImage(
             }
         }
     }
-}
-
-@Suppress("BlockingMethodInNonBlockingContext")
-private suspend fun getBitmapUri(url: String, context: Context): Uri? {
-    val bitmap = getCoilImageBitmap(url, context)
-
-    var bmpUri: Uri? = null
-    withContext(Dispatchers.IO) {
-        try {
-            val file = File(context.externalCacheDir, "image.png")
-            val fOut = FileOutputStream(file)
-            bitmap?.compress(Bitmap.CompressFormat.PNG, 100, fOut)
-            fOut.flush()
-            fOut.close()
-            bmpUri = FileProvider.getUriForFile(
-                context.applicationContext,
-                BuildConfig.APPLICATION_ID + ".fileprovider",
-                file
-            )
-            Timber.d("$bmpUri")
-        } catch (e: Exception) {
-            Timber.e(e)
-        }
-    }
-    return bmpUri
 }
 
 @Composable
