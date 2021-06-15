@@ -1,8 +1,5 @@
 package dev.sourabh.programmerhumor.ui.home
 
-import android.content.ClipData
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.compose.foundation.Image
@@ -35,10 +32,8 @@ import dev.sourabh.programmerhumor.data.model.ImageData
 import dev.sourabh.programmerhumor.data.response.PostData
 import dev.sourabh.programmerhumor.ui.theme.DividerLight
 import dev.sourabh.programmerhumor.ui.theme.WhiteTranslucent
-import dev.sourabh.programmerhumor.utils.getBitmapUri
 import dev.sourabh.programmerhumor.utils.gifImageLoader
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
+import dev.sourabh.programmerhumor.utils.shareImage
 import timber.log.Timber
 
 @Composable
@@ -216,41 +211,6 @@ fun StatsAndShareIcons(
             Spacer(modifier = modifier.padding(vertical = 8.dp))
         }
 
-    }
-}
-
-fun shareImage(
-    coroutineScope: CoroutineScope, imageUrl: String, title: String, context: Context,
-    shareIntentComplete: (Boolean) -> Unit
-) {
-    coroutineScope.launch {
-        val bitmapUri = getBitmapUri(imageUrl, context)
-        Timber.d("Share $bitmapUri")
-        if (bitmapUri != null) {
-            val intent = Intent().apply {
-                action = Intent.ACTION_SEND
-                flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                putExtra(Intent.EXTRA_TEXT, title)
-                putExtra(Intent.EXTRA_STREAM, bitmapUri)
-                type = "image/*"
-
-                /*
-                 * Provides a preview on android 10+, prevents an exception and better than
-                 * grantUri and it's new manifest permissions
-                 */
-                clipData = ClipData.newUri(
-                    context.contentResolver,
-                    context.getString(R.string.app_name),
-                    bitmapUri
-                )
-                flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
-            }
-
-            context.startActivity(Intent.createChooser(intent, "Share Image")).also {
-                Timber.d("Share intent startActivity")
-                shareIntentComplete(true)
-            }
-        }
     }
 }
 
