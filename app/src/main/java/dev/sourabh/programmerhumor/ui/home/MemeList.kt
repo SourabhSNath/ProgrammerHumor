@@ -72,6 +72,9 @@ fun MemesList(memes: LazyPagingItems<PostData>, navController: NavController) {
                 }
                 loadState.refresh is LoadState.Error -> {
                     val e = memes.loadState.refresh as LoadState.Error
+                    item {
+                        ExceptionMessage(e = e.error)
+                    }
                     Timber.d("refresh error $e")
                 }
 
@@ -224,16 +227,6 @@ fun StatsAndShareIcons(
     }
 }
 
-@Composable
-private fun Loading() {
-    Box(modifier = Modifier.fillMaxWidth()) {
-        CircularProgressIndicator(
-            Modifier.padding(24.dp).align(Alignment.TopCenter)
-        )
-    }
-}
-
-
 fun shareImage(
     coroutineScope: CoroutineScope, imageUrl: String, title: String, context: Context,
     shareIntentComplete: (Boolean) -> Unit
@@ -292,4 +285,24 @@ private suspend fun getBitmapUri(url: String, context: Context): Uri? {
         }
     }
     return bmpUri
+}
+
+@Composable
+private fun Loading() {
+    Box(modifier = Modifier.fillMaxWidth()) {
+        CircularProgressIndicator(
+            Modifier.padding(24.dp).align(Alignment.TopCenter)
+        )
+    }
+}
+
+@Composable
+private fun ExceptionMessage(e: Throwable) {
+    Timber.e(e)
+    Box(modifier = Modifier.fillMaxSize()) {
+        Text(
+            text = e.message.toString(), style = MaterialTheme.typography.body1,
+            modifier = Modifier.padding(24.dp)
+        )
+    }
 }
