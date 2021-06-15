@@ -12,6 +12,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.insets.ProvideWindowInsets
+import com.google.accompanist.insets.navigationBarsPadding
 import com.google.accompanist.insets.statusBarsPadding
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dagger.hilt.android.AndroidEntryPoint
@@ -46,7 +47,7 @@ class MainActivity : ComponentActivity() {
                         }
 
                         composable("image_view") {
-                            ImageViewerScreen(navController)
+                            ImageViewerScreen(navController, Modifier.navigationBarsPadding())
                         }
                     }
                 }
