@@ -6,6 +6,13 @@ import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.gestures.detectTransformGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.ExtendedFloatingActionButton
+import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Share
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -13,6 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.decode.DataSource
 import coil.request.CachePolicy
@@ -20,13 +28,14 @@ import coil.size.OriginalSize
 import com.google.accompanist.coil.rememberCoilPainter
 import dev.sourabh.programmerhumor.data.model.ImageData
 import dev.sourabh.programmerhumor.utils.gifImageLoader
+import dev.sourabh.programmerhumor.utils.shareImage
 import timber.log.Timber
 import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.sin
 
 @Composable
-fun ImageViewerScreen(navController: NavController) {
+fun ImageViewerScreen(navController: NavController, modifier: Modifier) {
     val imageData = navController.previousBackStackEntry?.arguments?.getParcelable<ImageData>("image_data")
 
     DataSource.MEMORY
@@ -98,6 +107,17 @@ fun ImageViewerScreen(navController: NavController) {
                     })
                 }
                 .fillMaxSize()
+        )
+
+        val scope = rememberCoroutineScope()
+        val context = LocalContext.current
+        ExtendedFloatingActionButton(
+            modifier = modifier.padding(24.dp).align(Alignment.BottomEnd),
+            text = { Text(text = "Share", style = MaterialTheme.typography.body2) },
+            icon = { Icon(Icons.Outlined.Share, contentDescription = "Share icon") },
+            onClick = {
+                imageData?.let { shareImage(scope, it.url, imageData.title, context) {} }
+            }
         )
     }
 }
