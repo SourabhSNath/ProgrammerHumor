@@ -16,7 +16,6 @@ import androidx.compose.material.icons.outlined.Share
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -39,7 +38,7 @@ import timber.log.Timber
 @Composable
 fun MemesList(memes: LazyPagingItems<PostData>, navController: NavController) {
     LazyColumn(
-        modifier = Modifier.fillMaxWidth()/*.padding(horizontal = 24.dp)*/,
+        modifier = Modifier.fillMaxWidth(),
         contentPadding = PaddingValues(bottom = 56.dp)
     ) {
         items(memes) {
@@ -86,8 +85,7 @@ fun Meme(postData: PostData, navController: NavController) {
         Column(modifier = Modifier.padding(start = 32.dp, end = 32.dp, top = 16.dp).fillMaxWidth()) {
             Text(
                 text = postData.author,
-                style = MaterialTheme.typography.body2,
-                color = Color.DarkGray
+                style = MaterialTheme.typography.body2
             )
             Text(text = postData.title, style = MaterialTheme.typography.h6)
         }

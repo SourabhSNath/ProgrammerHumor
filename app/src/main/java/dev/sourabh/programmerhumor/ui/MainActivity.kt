@@ -38,7 +38,7 @@ class MainActivity : ComponentActivity() {
                 systemUiController.setNavigationBarColor(Color.Transparent, useDarkColors)
             }
 
-            ProgrammerHumorTheme {
+            ProgrammerHumorTheme(darkTheme = true) {
                 ProvideWindowInsets {
 
                     NavHost(navController = navController, startDestination = "home") {

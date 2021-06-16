@@ -25,9 +25,9 @@ fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel()
 ) {
     val memes = viewModel.postsFlow.collectAsLazyPagingItems()
-    Column(modifier = Modifier.fillMaxSize()) {
-
-        AppBar(modifier = modifier, viewModel)
+    Scaffold(topBar = {
+        AppBar(modifier = modifier, viewModel = viewModel)
+    }) {
         MemesList(memes, navController)
     }
 }
