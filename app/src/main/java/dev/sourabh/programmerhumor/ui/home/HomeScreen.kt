@@ -52,6 +52,7 @@ fun Sort(viewModel: HomeViewModel) {
     Surface(
         modifier = Modifier.wrapContentSize(),
         elevation = 2.dp,
+        color = MaterialTheme.colors.background,
         shape = RoundedCornerShape(16.dp),
         border = BorderStroke(
             width = 1.dp, color = if (!expanded)

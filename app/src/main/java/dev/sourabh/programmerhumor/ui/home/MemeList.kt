@@ -2,10 +2,7 @@ package dev.sourabh.programmerhumor.ui.home
 
 import android.os.Bundle
 import android.widget.Toast
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -16,6 +13,7 @@ import androidx.compose.material.icons.outlined.Share
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -29,7 +27,6 @@ import com.google.accompanist.imageloading.ImageLoadState
 import dev.sourabh.programmerhumor.R
 import dev.sourabh.programmerhumor.data.model.ImageData
 import dev.sourabh.programmerhumor.data.response.PostData
-import dev.sourabh.programmerhumor.ui.theme.DividerLight
 import dev.sourabh.programmerhumor.ui.theme.WhiteTranslucent
 import dev.sourabh.programmerhumor.utils.gifImageLoader
 import dev.sourabh.programmerhumor.utils.shareImage
@@ -75,81 +72,90 @@ fun MemesList(memes: LazyPagingItems<PostData>, navController: NavController) {
 
 @Composable
 fun Meme(postData: PostData, navController: NavController) {
-    Column {
 
-        val imageUrl = postData.url
+    Card(
+        shape = RoundedCornerShape(24.dp), elevation = 0.dp,
+        modifier = Modifier.padding(start = 8.dp, end = 8.dp, top = 8.dp, bottom = 12.dp)
+    ) {
+        Column(Modifier.padding(bottom = 24.dp)) {
 
-        var isImageLoaded by remember { mutableStateOf(false) }
-        var isImageSharingComplete by remember { mutableStateOf<Boolean?>(null) }
+            val imageUrl = postData.url
 
-        Column(modifier = Modifier.padding(start = 32.dp, end = 32.dp, top = 16.dp).fillMaxWidth()) {
-            Text(
-                text = postData.author,
-                style = MaterialTheme.typography.body2
-            )
-            Text(text = postData.title, style = MaterialTheme.typography.h6)
-        }
+            var isImageLoaded by remember { mutableStateOf(false) }
+            var isImageSharingComplete by remember { mutableStateOf<Boolean?>(null) }
 
-        StatsAndShareIcons(postData.score, postData.numComments, imageUrl, postData.title, isImageLoaded) {
-            isImageSharingComplete = it
-        }
-
-        val isGif = imageUrl.substring(imageUrl.lastIndexOf('.') + 1) == "gif"
-        Card(shape = RoundedCornerShape(24.dp), elevation = 8.dp, modifier = Modifier.padding(horizontal = 24.dp)) {
-
-            val painter = rememberCoilPainter(
-                request = imageUrl,
-                imageLoader = gifImageLoader(LocalContext.current).build(),
-                fadeIn = true
-            )
-
-            if (painter.loadState is ImageLoadState.Loading) {
-                LinearProgressIndicator(modifier = Modifier.padding(8.dp).fillMaxWidth())
-                isImageLoaded = false
-            }
-            if (painter.loadState is ImageLoadState.Success) {
-                isImageLoaded = true
-            }
-
-            Image(
-                painter = painter,
-                contentDescription = "Meme Image",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable {
-                        val image = ImageData(
-                            postData.title, imageUrl,
-                            postData.commentLink
-                        )
-                        navController.currentBackStackEntry?.arguments = Bundle().apply {
-                            putParcelable("image_data", image)
-                        }
-                        navController.navigate("image_view")
-                    },
-                contentScale = ContentScale.Crop,
-            )
-            if (isGif) {
+            Column(modifier = Modifier.padding(start = 24.dp, end = 24.dp, top = 16.dp).fillMaxWidth()) {
                 Text(
-                    text = "Gif",
-                    modifier = Modifier
-                        .padding(8.dp)
-                        .border(1.dp, MaterialTheme.colors.primary, RoundedCornerShape(16.dp))
-                        .padding(4.dp)
+                    text = postData.author,
+                    style = MaterialTheme.typography.caption
                 )
+                Text(text = postData.title, style = MaterialTheme.typography.h6)
             }
 
-            if (isImageSharingComplete == false) {
-                Row(modifier = Modifier.padding(8.dp), verticalAlignment = Alignment.CenterVertically) {
-                    CircularProgressIndicator(modifier = Modifier.size(56.dp).padding(end = 8.dp))
+            StatsAndShareIcons(postData.score, postData.numComments, imageUrl, postData.title, isImageLoaded) {
+                isImageSharingComplete = it
+            }
+
+            val isGif = imageUrl.substring(imageUrl.lastIndexOf('.') + 1) == "gif"
+            Card(
+                shape = RoundedCornerShape(24.dp),
+                elevation = (1.4).dp,
+                modifier = Modifier.padding(horizontal = 16.dp)
+            ) {
+
+                val painter = rememberCoilPainter(
+                    request = imageUrl,
+                    imageLoader = gifImageLoader(LocalContext.current).build(),
+                    fadeIn = true
+                )
+
+                if (painter.loadState is ImageLoadState.Loading) {
+                    LinearProgressIndicator(modifier = Modifier.padding(8.dp).fillMaxWidth())
+                    isImageLoaded = false
+                }
+                if (painter.loadState is ImageLoadState.Success) {
+                    isImageLoaded = true
+                }
+
+                Image(
+                    painter = painter,
+                    contentDescription = "Meme Image",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .heightIn(min = 100.dp, max = 500.dp)
+                        .clickable {
+                            val image = ImageData(
+                                postData.title, imageUrl,
+                                postData.commentLink
+                            )
+                            navController.currentBackStackEntry?.arguments = Bundle().apply {
+                                putParcelable("image_data", image)
+                            }
+                            navController.navigate("image_view")
+                        },
+                    contentScale = ContentScale.Crop,
+                )
+                if (isGif) {
                     Text(
-                        text = "Downloading Image for sharing.", style = MaterialTheme.typography.body1,
-                        modifier = Modifier.background(WhiteTranslucent, RoundedCornerShape(16.dp)).padding(4.dp)
+                        text = "Gif",
+                        modifier = Modifier
+                            .padding(8.dp)
+                            .border(1.dp, MaterialTheme.colors.primary, RoundedCornerShape(16.dp))
+                            .padding(4.dp)
                     )
+                }
+
+                if (isImageSharingComplete == false) {
+                    Row(modifier = Modifier.padding(8.dp), verticalAlignment = Alignment.CenterVertically) {
+                        CircularProgressIndicator(modifier = Modifier.size(56.dp).padding(end = 8.dp))
+                        Text(
+                            text = "Downloading Image for sharing.", style = MaterialTheme.typography.body1,
+                            modifier = Modifier.background(WhiteTranslucent, RoundedCornerShape(16.dp)).padding(4.dp)
+                        )
+                    }
                 }
             }
         }
-
-        Divider(modifier = Modifier.padding(top = 24.dp), color = DividerLight)
     }
 }
 
@@ -163,7 +169,7 @@ fun StatsAndShareIcons(
     onShareImageDone: (Boolean) -> Unit
 ) {
     Row(
-        modifier = Modifier.fillMaxWidth().padding(start = 32.dp),
+        modifier = Modifier.fillMaxWidth().padding(start = 24.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
