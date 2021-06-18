@@ -32,13 +32,12 @@ class MainActivity : ComponentActivity() {
             val useDarkColors = MaterialTheme.colors.isLight
 
             val navController = rememberNavController()
-
             SideEffect {
                 systemUiController.setStatusBarColor(Color.Transparent, useDarkColors)
                 systemUiController.setNavigationBarColor(Color.Transparent, useDarkColors)
             }
 
-            ProgrammerHumorTheme(darkTheme = true) {
+            ProgrammerHumorTheme {
                 ProvideWindowInsets {
 
                     NavHost(navController = navController, startDestination = "home") {
