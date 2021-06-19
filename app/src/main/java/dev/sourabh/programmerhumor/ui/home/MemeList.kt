@@ -153,6 +153,7 @@ fun Meme(postData: PostData, navController: NavController) {
                 if (isGif) {
                     Text(
                         text = "Gif",
+                        style = MaterialTheme.typography.body2,
                         modifier = Modifier
                             .padding(8.dp)
                             .border(1.dp, MaterialTheme.colors.primary, RoundedCornerShape(16.dp))

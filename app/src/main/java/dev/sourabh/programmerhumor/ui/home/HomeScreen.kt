@@ -35,7 +35,7 @@ fun HomeScreen(
 @Composable
 fun AppBar(modifier: Modifier, viewModel: HomeViewModel) {
     Row(
-        modifier = modifier.padding(start = 24.dp, end = 24.dp, top = 24.dp, bottom = 16.dp).fillMaxWidth(),
+        modifier = modifier.padding(horizontal = 16.dp, vertical = 16.dp).fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Text(text = "ProgrammerHumor", style = MaterialTheme.typography.h5)
