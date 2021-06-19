@@ -8,8 +8,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import dev.sourabh.programmerhumor.R
 
-
-val Lobster = FontFamily(Font(R.font.lobster_regular, FontWeight.Bold))
+val Inter = FontFamily(
+    Font(R.font.inter_medium, FontWeight.Medium)
+)
 
 @Suppress("SpellCheckingInspection")
 val FiraCodeMono = FontFamily(
@@ -24,8 +25,8 @@ val Montserrat = FontFamily(
 
 val Typography = Typography(
     h5 = TextStyle(
-        fontFamily = Lobster,
-        fontWeight = FontWeight.Bold,
+        fontFamily = Inter,
+        fontWeight = FontWeight.Medium,
         fontSize = 28.sp
     ),
     h6 = TextStyle(
