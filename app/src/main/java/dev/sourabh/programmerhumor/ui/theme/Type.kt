@@ -9,7 +9,7 @@ import androidx.compose.ui.unit.sp
 import dev.sourabh.programmerhumor.R
 
 val Inter = FontFamily(
-    Font(R.font.inter_medium, FontWeight.Medium)
+    Font(R.font.inter_bold, FontWeight.Bold)
 )
 
 @Suppress("SpellCheckingInspection")
@@ -26,7 +26,7 @@ val Montserrat = FontFamily(
 val Typography = Typography(
     h5 = TextStyle(
         fontFamily = Inter,
-        fontWeight = FontWeight.Medium,
+        fontWeight = FontWeight.Bold,
         fontSize = 28.sp
     ),
     h6 = TextStyle(
