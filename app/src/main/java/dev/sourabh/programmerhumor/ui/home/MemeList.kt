@@ -1,8 +1,13 @@
 package dev.sourabh.programmerhumor.ui.home
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
-import androidx.compose.foundation.*
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -13,7 +18,6 @@ import androidx.compose.material.icons.outlined.Share
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -73,11 +77,22 @@ fun MemesList(memes: LazyPagingItems<PostData>, navController: NavController) {
 @Composable
 fun Meme(postData: PostData, navController: NavController) {
 
+    val context = LocalContext.current
     Card(
         shape = RoundedCornerShape(24.dp), elevation = 0.dp,
         modifier = Modifier.padding(start = 8.dp, end = 8.dp, top = 8.dp, bottom = 12.dp)
     ) {
-        Column(Modifier.padding(bottom = 24.dp)) {
+        Column(Modifier
+            .clickable {
+                Timber.d("Clicked")
+                context.startActivity(
+                    Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse("https://www.reddit.com${postData.commentLink}")
+                    )
+                )
+            }
+            .padding(bottom = if (MaterialTheme.colors.isLight) 16.dp else 24.dp)) {
 
             val imageUrl = postData.url
 
@@ -105,7 +120,7 @@ fun Meme(postData: PostData, navController: NavController) {
 
                 val painter = rememberCoilPainter(
                     request = imageUrl,
-                    imageLoader = gifImageLoader(LocalContext.current).build(),
+                    imageLoader = gifImageLoader(context).build(),
                     fadeIn = true
                 )
 
