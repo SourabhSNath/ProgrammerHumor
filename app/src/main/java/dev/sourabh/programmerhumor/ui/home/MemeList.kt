@@ -21,6 +21,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.paging.LoadState
@@ -37,7 +41,7 @@ import dev.sourabh.programmerhumor.utils.shareImage
 import timber.log.Timber
 
 @Composable
-fun MemesList(memes: LazyPagingItems<PostData>, navController: NavController) {
+fun MemesList(memes: LazyPagingItems<PostData>, navController: NavController, viewModel: HomeViewModel) {
     LazyColumn(
         modifier = Modifier.fillMaxWidth(),
         contentPadding = PaddingValues(bottom = 56.dp)
@@ -60,7 +64,7 @@ fun MemesList(memes: LazyPagingItems<PostData>, navController: NavController) {
                 loadState.refresh is LoadState.Error -> {
                     val e = memes.loadState.refresh as LoadState.Error
                     item {
-                        ExceptionMessage(e = e.error)
+                        ExceptionMessage(e = e.error, viewModel)
                     }
                     Timber.d("refresh error $e")
                 }
@@ -244,12 +248,34 @@ private fun Loading() {
 }
 
 @Composable
-private fun ExceptionMessage(e: Throwable) {
+private fun ExceptionMessage(e: Throwable, viewModel: HomeViewModel) {
     Timber.e(e)
-    Box(modifier = Modifier.fillMaxSize()) {
-        Text(
-            text = e.message.toString(), style = MaterialTheme.typography.body1,
-            modifier = Modifier.padding(24.dp)
-        )
+    val modifier = Modifier.padding(end = 4.dp)
+    Box(modifier = Modifier.fillMaxSize().padding(24.dp)) {
+        Column {
+            Text(text = "I use Arch BTW!", Modifier.padding(bottom = 8.dp), style = MaterialTheme.typography.caption)
+            
+            Row {
+                Text(">> $", style = MaterialTheme.typography.body1, modifier = modifier)
+                Text(
+                    text = e.cause.toString(),
+                    style = MaterialTheme.typography.body1, fontWeight = FontWeight.Bold
+                )
+            }
+            Row {
+                Text(">> $", style = MaterialTheme.typography.body1, modifier = modifier)
+                Text(
+                    text = e.message.toString(), style = MaterialTheme.typography.body1,
+                )
+            }
+
+            Button(
+                onClick = { viewModel.getPosts() },
+                modifier = Modifier.padding(24.dp).align(Alignment.CenterHorizontally),
+                shape = RoundedCornerShape(24.dp)
+            ) {
+                Text(text = "Retry")
+            }
+        }
     }
 }

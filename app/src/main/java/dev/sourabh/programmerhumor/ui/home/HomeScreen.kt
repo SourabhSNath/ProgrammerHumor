@@ -28,7 +28,7 @@ fun HomeScreen(
     Scaffold(topBar = {
         AppBar(modifier = modifier, viewModel = viewModel)
     }) {
-        MemesList(memes, navController)
+        MemesList(memes, navController, viewModel)
     }
 }
 
