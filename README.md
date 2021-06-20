@@ -16,7 +16,7 @@ https://issuetracker.google.com/issues/190723041
 
 ## Screenshots:
 
-<img src="https://github.com/SourabhSNath/ProgrammerHumor/blob/master/screenshots/home.jpg" height="350">   <img src="https://github.com/SourabhSNath/ProgrammerHumor/blob/master/screenshots/image_viewer.jpg" height="350">
+<img src="https://github.com/SourabhSNath/ProgrammerHumor/blob/master/screenshots/home.jpg" height="350">   <img src="https://github.com/SourabhSNath/ProgrammerHumor/blob/master/screenshots/home_dark.jpg" height="350">   <img src="https://github.com/SourabhSNath/ProgrammerHumor/blob/master/screenshots/image_viewer.jpg" height="350">
 
 ## Built With
 
