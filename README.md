@@ -27,6 +27,8 @@ https://issuetracker.google.com/issues/190723041
 - [Retrofit 2](https://square.github.io/retrofit/)
 - [OkHttp 3](https://square.github.io/okhttp/)
 - [Moshi](https://github.com/square/moshi)
+- [Paging](https://developer.android.com/jetpack/androidx/releases/paging)
+- [Accompanist](https://github.com/google/accompanist) - Coil, Insets, System UI Controller
 
 ## License
 [GNU General Public License v3.0](https://github.com/SourabhSNath/ProgrammerHumor/blob/master/LICENSE)
