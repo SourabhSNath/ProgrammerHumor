@@ -8,10 +8,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import dev.sourabh.programmerhumor.R
 
-val Inter = FontFamily(
-    Font(R.font.inter_bold, FontWeight.Bold)
-)
-
 @Suppress("SpellCheckingInspection")
 val FiraCodeMono = FontFamily(
     Font(R.font.firacode_regular, FontWeight.Normal),
@@ -25,9 +21,9 @@ val Montserrat = FontFamily(
 
 val Typography = Typography(
     h5 = TextStyle(
-        fontFamily = Inter,
+        fontFamily = Montserrat,
         fontWeight = FontWeight.Bold,
-        fontSize = 28.sp
+        fontSize = 26.sp
     ),
     h6 = TextStyle(
         fontFamily = Montserrat,
