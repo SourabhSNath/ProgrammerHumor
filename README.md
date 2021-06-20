@@ -5,9 +5,11 @@ View all the memes and jokes on programmer humor here.
 
 This app was built for practicing Jetpack Compose on Android and the idea was taken from Philipp Lackner's App Wars challenge.
 
----
+## [Download](https://github.com/SourabhSNath/ProgrammerHumor/releases)
+
+
 Bugs: 
-Current version suffers with the bugs on Compose Beta-08, the app can even randomly crash while navigating to the image viewer screen.
+Current version suffers with the bugs on Compose Beta-08, the app can randomly crash while navigating to the image viewer screen.
 https://issuetracker.google.com/issues/190723041
 
 ---
