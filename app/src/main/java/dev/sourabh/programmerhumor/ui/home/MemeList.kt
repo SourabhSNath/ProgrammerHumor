@@ -80,7 +80,7 @@ fun Meme(postData: PostData, navController: NavController) {
     val context = LocalContext.current
     Card(
         shape = RoundedCornerShape(24.dp), elevation = 0.dp,
-        modifier = Modifier.padding(start = 8.dp, end = 8.dp, top = 8.dp, bottom = 12.dp)
+        modifier = Modifier.padding(start = 8.dp, end = 8.dp, top = 0.dp, bottom = 16.dp)
     ) {
         Column(Modifier
             .clickable {
