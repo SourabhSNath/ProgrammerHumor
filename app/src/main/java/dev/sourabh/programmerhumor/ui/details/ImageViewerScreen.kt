@@ -77,8 +77,8 @@ fun ImageViewerScreen(navController: NavController, modifier: Modifier) {
 
                         val x: Float
                         val y: Float
-                        // Pan only if it's zoomed by 125%
-                        if (scaleState >= 1.5f) {
+                        // Pan only if it's zoomed over 100%
+                        if (scaleState >= 1.05f) {
                             Timber.d("X: ${pan.x}, Y: ${pan.y}")
                             x = pan.x * zoom
                             y = pan.y * zoom
